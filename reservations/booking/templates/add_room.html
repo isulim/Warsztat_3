@@ -1,0 +1,27 @@
+{% include "base.html" %}
+
+{% block body %}
+
+<form action="" method="post">
+{% csrf_token %}
+
+    <label>Nazwa sali:
+        <input type="text" name="name">
+    </label><br>
+    <label>Piętro:
+        <input type="number" name="floor" min="0" step="1">
+    </label><br>
+    <label>Liczba miejsc:
+        <input type="number" name="seats" min="10" step="1">
+    </label><br>
+    <label>Rzutnik:
+        <input type="checkbox" name="projector" value="True" checked>
+    </label><br>
+    <label>Biurka:
+        <input type="checkbox" name="desks" value="True">
+    </label><br>
+    <input type="submit" value="Dodaj pokój">
+
+</form>
+
+{% endblock body %}
