@@ -6,18 +6,14 @@ from booking.models import Room
 class AllRooms(View):
 
     def get(self, request):
-        rooms = Room.objects.all()
+        rooms = Room.objects.all().order_by('id')
         return render(request, 'all_rooms.html', {'rooms': rooms})
-    
-    def post(self, request):
-        rooms = Room.objects.all()
-        return render(request, 'all_rooms.html', {'rooms': rooms})
-
 
 class AddNewRoom(View): 
-
+    
     def get(self, request):
-        return render(request, 'add_room.html')
+        formname = 'Dodawanie nowej sali'
+        return render(request, 'add_room.html', locals())
     
     def post(self, request):
         nazwa = request.POST.get('name')
@@ -38,7 +34,35 @@ class AddNewRoom(View):
 
 
 class ModifyRoom(View):
-    pass
+    def get(self, request, id):
+        formname = 'Modyfikacja danych sali'
+        room = Room.objects.get(pk=id)
+        return render(request, 'add_room.html', locals())
+    
+    def post(self, request, id):
+        nazwa = request.POST.get('name')
+        pietro = request.POST.get('floor')
+        miejsca = request.POST.get('seats')
+        rzutnik = request.POST.get('projector')
+        biurka = request.POST.get('desks')
+        if rzutnik:
+            rzutnik = True
+        else:
+            rzutnik = False
+        if biurka:
+            biurka = True
+        else:
+            biurka = False
+        
+        room = Room.objects.get(pk=id)
+        room.name = nazwa
+        room.floor = pietro
+        room.seats = miejsca
+        room.projector = rzutnik
+        room.desks = biurka
+        room.save()
+
+        return redirect("/")
 
 
 class DeleteRoom(View):

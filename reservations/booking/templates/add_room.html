@@ -2,25 +2,34 @@
 
 {% block body %}
 
+{{ formname }}
+
 <form action="" method="post">
 {% csrf_token %}
 
     <label>Nazwa sali:
-        <input type="text" name="name">
+        <input type="text" name="name" value="{{room.name}}">
     </label><br>
     <label>Piętro:
-        <input type="number" name="floor" min="0" step="1">
+        <input type="number" name="floor" min="0" step="1" value="{{room.floor}}">
     </label><br>
     <label>Liczba miejsc:
-        <input type="number" name="seats" min="10" step="1">
+        <input type="number" name="seats" min="10" step="1" value="{{room.seats}}">
     </label><br>
     <label>Rzutnik:
-        <input type="checkbox" name="projector" value="True" checked>
+        <input type="checkbox" name="projector" value="True" 
+        {% if room.projector %}
+            checked 
+        {% endif %}>
     </label><br>
     <label>Biurka:
-        <input type="checkbox" name="desks" value="True">
+        <input type="checkbox" name="desks" value="True"
+        {% if room.desks %}
+            checked
+        {% endif %}>
     </label><br>
-    <input type="submit" value="Dodaj pokój">
+    <input type="hidden" value="{{ room.id }}">
+    <input type="submit" value="Zapisz salę">
 
 </form>
 
