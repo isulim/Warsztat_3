@@ -1,0 +1,23 @@
+{% include "base.html" %}
+
+{% block body %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    <h3>Panel rezerwacji sali {{ room.name }}</h3>
+    <label>
+        Właściciel rezerwacji
+        <input type="text" name="owner">
+    </label><br>
+    <label>
+        Data rezerwacji
+        <input type="date" name="data" min="{{ today }}" value="{{ today }}">
+    </label><br>
+    <label>
+        Komentarz do rezerwacji (128 znaków)
+        <input type="text" name="comment">
+    </label><br>
+    <input type="submit" value="Zarezerwuj">
+</form>
+
+{% endblock body %}

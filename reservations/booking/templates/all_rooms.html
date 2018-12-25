@@ -7,21 +7,23 @@
         <tr>
             <th>ID</th>
             <th>Nazwa sali</th>
-            <th>Zajętość dzisiaj</th>            
+            <th>Dostępność dzisiaj</th>            
         </tr>
-        {% for room in rooms %}
+        
+        {% for room in rooms %}            
         <tr>
             <td>{{ room.id }}</td>
             <td>
-                <a href="/room/{{ room.id }}">{{ room.name }}</a>
-                <br><a href="/room/modify/{{ room.id }}">Edytuj</a>
-                <a href="/room/delete/{{ room.id }}">Usuń</a>
+                <a href="{% url 'room-details' room.id %}">{{ room.name }}</a><br>
+                <a href="{% url 'modify-room' room.id %}">Edytuj salę</a><br>
+                <a href="{% url 'delete-room' room.id %}">Usuń</a>
             </td>
+            <td>{{room.dost}}</td>
         </tr>    
         {% endfor %}
     </table>
     <br>
 <form method="get">
-    <button type="submit" formaction="room/new">Dodaj salę</button>
+    <button type="submit" formaction="{% url 'new-room' %}">Dodaj salę</button>
 </form>
 {% endblock body %}
