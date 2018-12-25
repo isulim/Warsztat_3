@@ -7,27 +7,16 @@
         <tr>
             <th>ID</th>
             <th>Nazwa sali</th>
-            <th>Liczba miejsc</th>
-            <th>Piętro</th>
-            <th>Rzutnik</th>
-            <th>Biurka</th>            
+            <th>Zajętość dzisiaj</th>            
         </tr>
         {% for room in rooms %}
         <tr>
             <td>{{ room.id }}</td>
-            <td>{{ room.name }}</td>
-            <td>{{ room.seats }}</td>
-            <td>{{ room.floor }}</td>
-            {% if room.projector %}
-            <td>TAK</td>
-            {% else %}
-            <td>NIE</td>
-            {% endif %}
-            {% if room.desks %}
-            <td>TAK</td>
-            {% else %}
-            <td>NIE</td>
-            {% endif %}
+            <td>
+                <a href="/room/{{ room.id }}">{{ room.name }}</a>
+                <br><a href="/room/modify/{{ room.id }}">Edytuj</a>
+                <a href="/room/delete/{{ room.id }}">Usuń</a>
+            </td>
         </tr>    
         {% endfor %}
     </table>

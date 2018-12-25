@@ -1,0 +1,31 @@
+{% include "base.html" %}
+
+{% block body %}
+<table>
+        <caption>SALA {{ room.name }}</caption>
+        <tr>
+            <th>ID</th>
+            <th>Nazwa sali</th>
+            <th>Liczba miejsc</th>
+            <th>Piętro</th>
+            <th>Rzutnik</th>
+            <th>Biurka</th>            
+        </tr>
+        <tr>
+            <td>{{ room.id }}</td>
+            <td>{{ room.name }}<br><a href="/room/modify/{{ room.id }}">Edytuj</a></td>
+            <td>{{ room.seats }}</td>
+            <td>{{ room.floor }}</td>
+            {% if room.projector %}
+            <td>TAK</td>
+            {% else %}
+            <td>NIE</td>
+            {% endif %}
+            {% if room.desks %}
+            <td>TAK</td>
+            {% else %}
+            <td>NIE</td>
+            {% endif %}
+        </tr>    
+    </table>
+{% endblock body %}

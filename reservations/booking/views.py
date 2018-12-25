@@ -11,7 +11,7 @@ class AllRooms(View):
     
     def post(self, request):
         rooms = Room.objects.all()
-        return render(request, 'all_rooms.html')
+        return render(request, 'all_rooms.html', {'rooms': rooms})
 
 
 class AddNewRoom(View): 
@@ -42,8 +42,13 @@ class ModifyRoom(View):
 
 
 class DeleteRoom(View):
-    pass
+    def get(self, request, id):
+        Room.objects.get(pk=id).delete()
+        return redirect("/")
+
 
 
 class RoomDetails(View):
-    pass
+    def get(self, request, id):
+        room = Room.objects.get(pk=id)
+        return render(request, 'room_details.html', {'room': room})
