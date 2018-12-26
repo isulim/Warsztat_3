@@ -95,6 +95,7 @@ class Reserve(View):
     def get(self, request, room_id):
         today = date.today().strftime("%Y-%m-%d")
         room = Room.objects.get(pk=room_id)
+        reserv = room.reservation_set.filter(date__gte=date.today()).order_by('date')[:30]
         return render(request, 'reservation_form.html', locals())
 
     def post(self, request, room_id):

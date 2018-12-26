@@ -5,19 +5,49 @@
 <form action="" method="post">
     {% csrf_token %}
     <h3>Panel rezerwacji sali {{ room.name }}</h3>
+    <div style="float: left; margin-right: 50px;">
     <label>
-        Właściciel rezerwacji
+        Właściciel rezerwacji<br>
         <input type="text" name="owner">
     </label><br>
     <label>
-        Data rezerwacji
+        Data rezerwacji<br>
         <input type="date" name="data" min="{{ today }}" value="{{ today }}">
     </label><br>
     <label>
-        Komentarz do rezerwacji (128 znaków)
+        Komentarz do rezerwacji (128 znaków)<br>
         <input type="text" name="comment">
     </label><br>
     <input type="submit" value="Zarezerwuj">
+    </div>
+    <div style="float:center; margin-left: 50px;">
+        <label>
+            Najbliższe rezerwacje:
+            <table>
+                <tr>
+                    <td>
+                    Nr
+                    </td>
+                    <td>
+                    Data
+                    </td>
+                </tr>
+                {% for res in reserv %}
+                <tr>
+                    <td>
+                        {{ forloop.counter }}
+                    </td>
+                    <td>
+                        {% if res.date|date:"%Y-%m-%d" >= today|date:"%Y-%m-%d" %}
+                            {{ res.date }}: {{res.comment|default:"Brak komentarza"}}
+                            <br>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </label>
+    </div>
 </form>
 
 {% endblock content %}
