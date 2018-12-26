@@ -1,6 +1,6 @@
-{% include "base.html" %}
+{% extends "base.html" %}
 
-{% block body %}
+{% block content %}
 <table>
     <caption>SALA {{ room.name }}</caption>
     <tr>
@@ -43,4 +43,4 @@
     <button type="submit" formaction="{% url 'reservation' room.id %}">Zarezerwuj salę</button>
 </form>
 
-{% endblock body %}
+{% endblock content %}

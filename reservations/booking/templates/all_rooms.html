@@ -1,6 +1,10 @@
-{% include "base.html" %}
+{% extends "base.html" %}
 
-{% block body %}
+{% block header %}
+LISTA SAL
+{% endblock header %}
+
+{% block content %}
 
     <table>
         <caption>Lista sal konferencyjnych</caption>
@@ -26,4 +30,4 @@
 <form method="get">
     <button type="submit" formaction="{% url 'new-room' %}">Dodaj salę</button>
 </form>
-{% endblock body %}
+{% endblock content %}
