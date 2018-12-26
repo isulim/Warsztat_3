@@ -5,7 +5,7 @@ LISTA SAL
 {% endblock header %}
 
 {% block content %}
-
+<article>
     <table>
         <caption>Lista sal konferencyjnych</caption>
         <tr>
@@ -26,8 +26,33 @@ LISTA SAL
         </tr>    
         {% endfor %}
     </table>
-    <br>
+     <br>
 <form method="get">
-    <button type="submit" formaction="{% url 'new-room' %}">Dodaj salę</button>
+    <button type="submit" formaction="{% url 'new-room' %}">Dodaj nową salę</button>
 </form>
+</article>
+    <nav>
+        <form method="post">
+            {% csrf_token %}
+            <h4>Wyszukiwanie wolnej sali</h4>
+            <label>
+                Nazwa:
+                <input type="text" name="name">
+            </label><br>
+            <label>
+                Liczba miejsc:
+                <input type="number" name="seats" min="0" step="1">
+            </label><br>
+            <label>
+                Dzień:
+                <input type="date" name="day" min="{{ today_str }}" value="{{ today_str }}">
+            </label><br>
+            <label>
+                Rzutnik:
+                <input type="checkbox" name="projector">
+            </label><br>
+            <input type="submit" value="Wyszukaj">
+        </form>
+    </nav>
+    
 {% endblock content %}

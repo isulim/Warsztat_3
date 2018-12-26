@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
+{% block header %}
+REZERWACJA SALI <br>{{room.name}}
+{% endblock header %}
+
 {% block content %}
 
 <form action="" method="post">
     {% csrf_token %}
-    <h3>Panel rezerwacji sali {{ room.name }}</h3>
     <div style="float: left; margin-right: 50px;">
     <label>
         Właściciel rezerwacji<br>
@@ -12,7 +15,7 @@
     </label><br>
     <label>
         Data rezerwacji<br>
-        <input type="date" name="data" min="{{ today }}" value="{{ today }}">
+        <input type="date" name="data" min="{{ today_str }}" value="{{ today_str }}">
     </label><br>
     <label>
         Komentarz do rezerwacji (128 znaków)<br>
@@ -20,7 +23,7 @@
     </label><br>
     <input type="submit" value="Zarezerwuj">
     </div>
-    <div style="float:center; margin-left: 50px;">
+    <div style="float:left; margin-left: 50px;">
         <label>
             Najbliższe rezerwacje:
             <table>

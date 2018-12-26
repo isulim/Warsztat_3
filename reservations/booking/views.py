@@ -5,6 +5,8 @@ from datetime import date
 from dateutil import parser
 
 
+today_str = date.today().strftime("%Y-%m-%d")
+
 class AllRooms(View):
 
     def get(self, request):
@@ -12,6 +14,7 @@ class AllRooms(View):
         dost = ''
         today = date.today()
         today = (today,)
+        today_str = date.today().strftime("%Y-%m-%d")
         for room in rooms:
             if today in room.reservation_set.filter(date__gte=date.today()).values_list('date'):
                 dost = 'Zajęta'
@@ -93,7 +96,7 @@ class RoomDetails(View):
 
 class Reserve(View):
     def get(self, request, room_id):
-        today = date.today().strftime("%Y-%m-%d")
+        today_str = date.today().strftime("%Y-%m-%d")
         room = Room.objects.get(pk=room_id)
         reserv = room.reservation_set.filter(date__gte=date.today()).order_by('date')[:30]
         return render(request, 'reservation_form.html', locals())
