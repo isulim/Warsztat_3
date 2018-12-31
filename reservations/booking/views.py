@@ -5,16 +5,18 @@ from datetime import date
 from dateutil import parser
 
 
-today_str = date.today().strftime("%Y-%m-%d")
+class MyView(View):
+    today_str = date.today().strftime("%Y-%m-%d")
 
-class AllRooms(View):
+
+class AllRooms(MyView):
 
     def get(self, request):
         rooms = Room.objects.all().order_by('id')
         dost = ''
         today = date.today()
         today = (today,)
-        today_str = date.today().strftime("%Y-%m-%d")
+
         for room in rooms:
             if today in room.reservation_set.filter(date__gte=date.today()).values_list('date'):
                 dost = 'Zajęta'
@@ -23,10 +25,11 @@ class AllRooms(View):
             room.dost = dost
         return render(request, 'all_rooms.html', locals())
 
-class AddNewRoom(View): 
-    
+class AddNewRoom(MyView): 
+
     def get(self, request):
-        formname = 'Dodawanie nowej sali'
+        header_text = "Tworzenie nowej sali"
+        submit_text = "Dodaj nową salę"
         return render(request, 'add_room.html', locals())
     
     def post(self, request):
@@ -47,10 +50,12 @@ class AddNewRoom(View):
         return redirect("/")
 
 
-class ModifyRoom(View):
+class ModifyRoom(MyView):
+
     def get(self, request, id):
-        formname = 'Modyfikacja danych sali'
         room = Room.objects.get(pk=id)
+        header_text = 'Edycja sali "{}"'.format(room.name)
+        submit_text = "Zapisz zmiany"
         return render(request, 'add_room.html', locals())
     
     def post(self, request, id):
@@ -79,14 +84,15 @@ class ModifyRoom(View):
         return redirect("/")
 
 
-class DeleteRoom(View):
+class DeleteRoom(MyView):
+
     def get(self, request, id):
         Room.objects.get(pk=id).delete()
         return redirect("/")
 
 
-
-class RoomDetails(View):
+class RoomDetails(MyView):
+  
     def get(self, request, id):
         today = date.today()
         room = Room.objects.get(pk=id)
@@ -94,9 +100,9 @@ class RoomDetails(View):
         return render(request, 'room_details.html', locals())
 
 
-class Reserve(View):
+class Reserve(MyView):
+
     def get(self, request, room_id):
-        today_str = date.today().strftime("%Y-%m-%d")
         room = Room.objects.get(pk=room_id)
         reserv = room.reservation_set.filter(date__gte=date.today()).order_by('date')[:30]
         return render(request, 'reservation_form.html', locals())
@@ -106,7 +112,7 @@ class Reserve(View):
             data = request.POST.get('data')
         else:
             raise Exception("Nieprawidłowy format daty!")
-        print(data)
+
         wlasciciel = request.POST.get('owner')
         komentarz = request.POST.get('comment')
         pokoj = Room.objects.get(pk=room_id)
@@ -119,3 +125,23 @@ class Reserve(View):
         else:
             res = Reservation.objects.create(owner=wlasciciel, date=data, room=pokoj, comment=komentarz)
             return redirect("/")
+
+class Search(MyView):
+
+    def get(self, request):
+        header_text = "Wyniki wyszukiwania"
+        pass
+
+    def post(self, request):
+        nazwa = request.POST.get('name')
+        min_miejsc = request.POST.get('seats_min')
+        max_miejsc = resuest.POST.get('seats_max')
+        rzutnik = request.POST.get('projector')
+        dzien = request.POST.get('day')
+        data = parser.parse(dzien)
+
+        if dzien:
+            rooms = Room.objects.all()
+            # filter na obiekcie rooms
+        else:
+            rooms = "Brak wyników spełniających podane kryteria."

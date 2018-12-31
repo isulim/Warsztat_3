@@ -51,11 +51,11 @@ nav ul {
     padding: 0;
 }
 
-article {
+section {
     float: left;
     width: 70%;
     padding: 20px;
-    background-color: #f1f1f1;
+    background-color: #e1e1e1;
 }
 
 /* Clear floats after the columns */
@@ -65,15 +65,6 @@ section:after {
     clear: both;
 }
 
-/* Style the footer */
-footer {
-    float: bottom;
-    background-color: #777;
-    padding: 10px;
-    text-align: center;
-    color: white;
-}
-
 </style>
 
 <body>
@@ -81,14 +72,45 @@ footer {
         {% block header %}
         {% endblock header %}
     </header>
-    
+    <div>
+        <nav>
+            <form method="post" action="/search">
+                {% csrf_token %}
+                <h3>Wyszukaj wolną salę</h3>
+                Podaj dzień i przynajmniej jeden parametr:
+                <label>
+                    <b>Dzień:</b><br>
+                    <input type="date" name="day" min="{{ self.today_str }}" value="{{ self.today_str }}">
+                </label><br>
+                <label>
+                    <b>Nazwa:</b><br>
+                    <input type="text" name="name" maxlength="32">
+                </label><br>
+                <label>
+                    <b>Liczba miejsc:</b><br>
+                </label> 
+                    minimalna:<input type="number" name="seats_min" min="0" step="1" style="width: 75px;"><br>
+                    maksymalna:<input type="number" name="seats_max" min="0" step="1" style="width: 75px;"><br>
+                
+                <label>
+                    <b>Rzutnik:</b>
+                    <input type="checkbox" name="projector">
+                </label><br>
+                <input type="submit" value="Wyszukaj" style="width: 120px; height: 30px; font-size: 14px;">
+            </form>
+        </nav>
+        <section>
         {% block content %}
         {% endblock content %}
-    
+        <form method="get">
+            <button type="submit" formaction="{% url 'home' %}" 
+                style="width: 200px; height: 60px; font-size: 18px; margin-top: 15px;">
+                <b>Powrót do listy</b>
+            </button>
+        </form>
+        </section>
+    </div>
 
-    <footer style="float: bottom; text-align: left;">
-    isulim, 2018
-    </footer>
 
 </body>
 

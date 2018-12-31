@@ -1,46 +1,47 @@
 {% extends "base.html" %}
 
+{% block header %}
+Szczegóły sali "{{ room.name }}"
+{% endblock header %}
+
 {% block content %}
-<table>
-    <caption>SALA {{ room.name }}</caption>
-    <tr>
-        <th>ID</th>
-        <th>Nazwa sali</th>
-        <th>Miejsca</th>
-        <th>Piętro</th>
-        <th>Rzutnik</th>
-        <th>Biurka</th>
-        <th>Najbliższe rezerwacje</th>            
-    </tr>
-    <tr>
-        <td>{{ room.id }}</td>
-        <td>{{ room.name }}<br><a href="{% url 'modify-room' room.id %}">Edytuj salę</a></td>
-        <td>{{ room.seats }}</td>
-        <td>{{ room.floor }}</td>
-        {% if room.projector %}
-            <td>TAK</td>
-        {% else %}
-            <td>NIE</td>
-        {% endif %}
-        {% if room.desks %}
-            <td>TAK</td>
-        {% else %}
-            <td>NIE</td>
-        {% endif %}
-        <td>
-        {% for res in reserv %}
-        {% if res.date|date:"%Y-%m-%d" >= today|date:"%Y-%m-%d" %}
-            {{ res.date }}: {{res.comment|default:"Brak komentarza"}}
-            <br>
-        {% endif %}
-            
-        {% endfor %}
-        </td>
-    </tr>    
-</table>
-<form method="get">
-    {% csrf_token %}
-    <button type="submit" formaction="{% url 'reservation' room.id %}">Zarezerwuj salę</button>
-</form>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Nazwa sali</th>
+            <th>Miejsca</th>
+            <th>Piętro</th>
+            <th>Rzutnik</th>
+            <th>Biurka</th>
+            <th>Najbliższe rezerwacje</th>            
+        </tr>
+        <tr>
+            <td>{{ room.id }}</td>
+            <td>{{ room.name }}<br><a href="{% url 'modify-room' room.id %}">Edytuj salę</a></td>
+            <td>{{ room.seats }}</td>
+            <td>{{ room.floor }}</td>
+            {% if room.projector %}
+                <td>TAK</td>
+            {% else %}
+                <td>NIE</td>
+            {% endif %}
+            {% if room.desks %}
+                <td>TAK</td>
+            {% else %}
+                <td>NIE</td>
+            {% endif %}
+            <td>
+            {% for res in reserv %}
+            {% if res.date|date:"%Y-%m-%d" >= today|date:"%Y-%m-%d" %}
+                {{ res.date }}: {{res.comment|default:"Brak komentarza"}}
+                <br>
+            {% endif %}
+                
+            {% endfor %}
+            <a href="{% url 'reservation' room.id%}">Zarezerwuj salę</a>
+            </td>
+        </tr>    
+    </table>
 
 {% endblock content %}

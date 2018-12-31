@@ -6,51 +6,51 @@ REZERWACJA SALI <br>{{room.name}}
 
 {% block content %}
 
-<form action="" method="post">
-    {% csrf_token %}
-    <div style="float: left; margin-right: 50px;">
-    <label>
-        Właściciel rezerwacji<br>
-        <input type="text" name="owner">
-    </label><br>
-    <label>
-        Data rezerwacji<br>
-        <input type="date" name="data" min="{{ today_str }}" value="{{ today_str }}">
-    </label><br>
-    <label>
-        Komentarz do rezerwacji (128 znaków)<br>
-        <input type="text" name="comment">
-    </label><br>
-    <input type="submit" value="Zarezerwuj">
-    </div>
-    <div style="float:left; margin-left: 50px;">
+    <form action="" method="post">
+        {% csrf_token %}
+        <div style="float: left; margin-right: 50px;">
         <label>
-            Najbliższe rezerwacje:
-            <table>
-                <tr>
-                    <td>
-                    Nr
-                    </td>
-                    <td>
-                    Data
-                    </td>
-                </tr>
-                {% for res in reserv %}
-                <tr>
-                    <td>
-                        {{ forloop.counter }}
-                    </td>
-                    <td>
-                        {% if res.date|date:"%Y-%m-%d" >= today|date:"%Y-%m-%d" %}
-                            {{ res.date }}: {{res.comment|default:"Brak komentarza"}}
-                            <br>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        </label>
-    </div>
-</form>
+            <b>Właściciel rezerwacji</b><br>
+            <input type="text" name="owner">
+        </label><br>
+        <label>
+            <b>Data rezerwacji</b><br>
+            <input type="date" name="data" min="{{ self.today_str }}" value="{{ self.today_str }}">
+        </label><br>
+        <label>
+            <b>Komentarz do rezerwacji</b> (128 znaków)<br>
+            <input type="text" name="comment">
+        </label><br>
+        <input type="submit" value="Zarezerwuj" style="width: 120px; height: 30px; font-size: 14px;">
+        </div>
+        <div style="float:left; margin-left: 50px;">
+            <label>
+                <b>Najbliższe rezerwacje:</b>
+                <table>
+                    <tr>
+                        <th>
+                        Nr
+                        </th>
+                        <th>
+                        Data i komentarz
+                        </th>
+                    </tr>
+                    {% for res in reserv %}
+                    <tr>
+                        <td>
+                            {{ forloop.counter }}
+                        </td>
+                        <td>
+                            {% if res.date|date:"%Y-%m-%d" >= today|date:"%Y-%m-%d" %}
+                                {{ res.date }}: {{res.comment|default:"Brak komentarza"}}
+                                <br>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </label>
+        </div>
+    </form>
 
 {% endblock content %}
