@@ -8,14 +8,14 @@ Lista sal
 
     <table>
         <tr>
-            <th>ID</th>
+            <th>Nr</th>
             <th>Nazwa sali</th>
             <th>Dostępność dzisiaj</th>            
         </tr>
         
         {% for room in rooms %}            
         <tr>
-            <td>{{ room.id }}</td>
+            <td>{{ forloop.counter }}</td>
             <td>
                 <a href="{% url 'room-details' room.id %}">{{ room.name }}</a><br>
                 <a href="{% url 'modify-room' room.id %}">Edytuj salę</a><br>
@@ -26,7 +26,8 @@ Lista sal
         {% endfor %}
     </table>
      <br>
-    <form method="get">
+    <form method="post">
+        {% csrf_token %}
         <button type="submit" formaction="{% url 'new-room' %}" style="width: 120px; height: 30px; font-size: 14px;">Dodaj nową salę</button>
     </form>
 

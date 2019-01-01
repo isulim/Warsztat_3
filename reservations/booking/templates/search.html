@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block header %}
+    {{ header_text }}
+{% endblock header %}
+
+{% block content %}
+        <table>
+            <tr>
+                <th>Nr</th>
+                <th>Nazwa sali</th>
+                <th>Liczba miejsc</th>
+                <th>Rzutnik</th>
+                <th>Biurka</th>
+                <th>Piętro</th>
+                <th>Rezerwacja</th>            
+            </tr>
+        
+            {% for room in rooms %}            
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ room.name }}</td>
+                <td>{{ room.seats }}</td>
+                {% if room.projector %}
+                    <td>TAK</td>
+                {% else %}
+                    <td>NIE</td>
+                {% endif %}
+                {% if room.desks %}
+                    <td>TAK</td>
+                {% else %}
+                    <td>NIE</td>
+                {% endif %}
+                <td>{{ room.floor }}</td>
+                <td><a href="{% url 'reservation' room.id %}">Zarezerwuj</a></td>
+            </tr>    
+            {% endfor %}
+    </table>
+{% endblock content %}

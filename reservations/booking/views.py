@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse, HttpResponseRedirect
 from django.views import View
 from booking.models import *
 from datetime import date
@@ -101,7 +101,7 @@ class RoomDetails(MyView):
 
 
 class Reserve(MyView):
-
+  
     def get(self, request, room_id):
         room = Room.objects.get(pk=room_id)
         reserv = room.reservation_set.filter(date__gte=date.today()).order_by('date')[:30]
@@ -110,38 +110,45 @@ class Reserve(MyView):
     def post(self, request, room_id):
         if request.POST.get('data'):
             data = request.POST.get('data')
+            data = parser.parse(data).date()
         else:
             raise Exception("Nieprawidłowy format daty!")
 
         wlasciciel = request.POST.get('owner')
         komentarz = request.POST.get('comment')
         pokoj = Room.objects.get(pk=room_id)
-        if (parser.parse(data).date(),) in pokoj.reservation_set.filter(date__gte=date.today()).values_list('date'):
-            response = HttpResponse("""
-            Sala jest już zarezerwowana tego dnia.<br>
-            <a href="/">Powrót do głównej</a>
-            """)
-            return response
+        if (data,) in pokoj.reservation_set.filter(date__gte=date.today()).values_list('date'):
+            message = "Pokój jest już zarezerwowany w danym terminie."
+            return HttpResponseRedirect("/reservation/{}".format(str(room_id)), locals())
         else:
             res = Reservation.objects.create(owner=wlasciciel, date=data, room=pokoj, comment=komentarz)
-            return redirect("/")
+            return HttpResponseRedirect("/")
 
 class Search(MyView):
 
     def get(self, request):
-        header_text = "Wyniki wyszukiwania"
-        pass
+        
+        nazwa = request.GET.get('name')
+        min_miejsc = request.GET.get('seats_min')
+        max_miejsc = request.GET.get('seats_max')
+        rzutnik = request.GET.get('projector')
+        dzien = request.GET.get('day')
+        data = parser.parse(dzien).date()
+        header_text = "Wolne sale w dniu: {}".format(dzien)
 
-    def post(self, request):
-        nazwa = request.POST.get('name')
-        min_miejsc = request.POST.get('seats_min')
-        max_miejsc = resuest.POST.get('seats_max')
-        rzutnik = request.POST.get('projector')
-        dzien = request.POST.get('day')
-        data = parser.parse(dzien)
+        rooms = Room.objects.all().order_by('seats')
 
-        if dzien:
-            rooms = Room.objects.all()
-            # filter na obiekcie rooms
-        else:
-            rooms = "Brak wyników spełniających podane kryteria."
+        if nazwa:
+            rooms = rooms.filter(name=nazwa)
+        if min_miejsc:
+            rooms = rooms.filter(seats__gte=min_miejsc)
+        if max_miejsc:
+            rooms = rooms.filter(seats__lte=max_miejsc)
+        if rzutnik:
+            rooms = rooms.filter(projector=True)
+        
+        for room in rooms:
+            if (data,) in room.reservation_set.all().values_list('date'):
+                rooms = rooms.exclude(pk=room.id)
+
+        return render(request, 'search.html', locals())

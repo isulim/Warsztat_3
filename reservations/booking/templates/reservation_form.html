@@ -6,9 +6,11 @@ REZERWACJA SALI <br>{{room.name}}
 
 {% block content %}
 
+    
+<div style="float: left; margin-right: 50px;">
+    <h4 style="color: #e70000;">{{message}}</h4>
     <form action="" method="post">
         {% csrf_token %}
-        <div style="float: left; margin-right: 50px;">
         <label>
             <b>Właściciel rezerwacji</b><br>
             <input type="text" name="owner">
@@ -22,35 +24,37 @@ REZERWACJA SALI <br>{{room.name}}
             <input type="text" name="comment">
         </label><br>
         <input type="submit" value="Zarezerwuj" style="width: 120px; height: 30px; font-size: 14px;">
-        </div>
-        <div style="float:left; margin-left: 50px;">
-            <label>
-                <b>Najbliższe rezerwacje:</b>
-                <table>
-                    <tr>
-                        <th>
-                        Nr
-                        </th>
-                        <th>
-                        Data i komentarz
-                        </th>
-                    </tr>
-                    {% for res in reserv %}
-                    <tr>
-                        <td>
-                            {{ forloop.counter }}
-                        </td>
-                        <td>
-                            {% if res.date|date:"%Y-%m-%d" >= today|date:"%Y-%m-%d" %}
-                                {{ res.date }}: {{res.comment|default:"Brak komentarza"}}
-                                <br>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </label>
-        </div>
     </form>
+</div>
+
+<div style="float:left; margin-left: 50px;">
+    <label>
+        <b>Najbliższe rezerwacje:</b>
+        <table>
+            <tr>
+                <th>
+                Nr
+                </th>
+                <th>
+                Data i komentarz
+                </th>
+            </tr>
+            {% for res in reserv %}
+            <tr>
+                <td>
+                    {{ forloop.counter }}
+                </td>
+                <td>
+                    {% if res.date|date:"%Y-%m-%d" >= today|date:"%Y-%m-%d" %}
+                        {{ res.date }}: {{res.comment|default:"Brak komentarza"}}
+                        <br>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </label>
+</div>
+
 
 {% endblock content %}

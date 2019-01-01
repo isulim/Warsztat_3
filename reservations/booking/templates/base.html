@@ -29,7 +29,7 @@ body {
 }
 
 /* Style the header */
-header {
+.header {
     background-color: #666;
     padding: 30px;
     text-align: center;
@@ -38,79 +38,82 @@ header {
 }
 
 /* Create two columns/boxes that floats next to each other */
-nav {
+.search {
     float: left;
     width: 30%;
     background: #ccc;
     padding: 20px;
 }
 
-/* Style the list inside the menu */
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
 
-section {
+.main {
     float: left;
     width: 70%;
     padding: 20px;
     background-color: #e1e1e1;
 }
 
-/* Clear floats after the columns */
+.homebutton {
+    position: relative;
+}
+
 section:after {
     content: "";
     display: table;
     clear: both;
 }
 
+
 </style>
 
 <body>
-    <header>
+    <div class="header">
         {% block header %}
         {% endblock header %}
-    </header>
-    <div>
-        <nav>
-            <form method="post" action="/search">
-                {% csrf_token %}
-                <h3>Wyszukaj wolną salę</h3>
-                Podaj dzień i przynajmniej jeden parametr:
-                <label>
-                    <b>Dzień:</b><br>
-                    <input type="date" name="day" min="{{ self.today_str }}" value="{{ self.today_str }}">
-                </label><br>
-                <label>
-                    <b>Nazwa:</b><br>
-                    <input type="text" name="name" maxlength="32">
-                </label><br>
-                <label>
-                    <b>Liczba miejsc:</b><br>
-                </label> 
-                    minimalna:<input type="number" name="seats_min" min="0" step="1" style="width: 75px;"><br>
-                    maksymalna:<input type="number" name="seats_max" min="0" step="1" style="width: 75px;"><br>
-                
-                <label>
-                    <b>Rzutnik:</b>
-                    <input type="checkbox" name="projector">
-                </label><br>
-                <input type="submit" value="Wyszukaj" style="width: 120px; height: 30px; font-size: 14px;">
-            </form>
-        </nav>
-        <section>
-        {% block content %}
-        {% endblock content %}
-        <form method="get">
-            <button type="submit" formaction="{% url 'home' %}" 
-                style="width: 200px; height: 60px; font-size: 18px; margin-top: 15px;">
-                <b>Powrót do listy</b>
-            </button>
+    </div>
+    <div class="search">
+        <form method="get" action="/search">
+
+            <h3>Wyszukaj wolną salę</h3>
+            <label>
+                <b>Dzień*:</b><br>
+                <input type="date" name="day" min="{{ self.today_str }}" value="{{ self.today_str }}">
+            </label><br>
+            <label>
+                <b>Nazwa:</b><br>
+                <input type="text" name="name" maxlength="32">
+            </label><br>
+            <label>
+                <b>Liczba miejsc:</b><br>
+            </label> 
+                minimalna:<input type="number" name="seats_min" min="0" step="1" style="width: 75px;"><br>
+                maksymalna:<input type="number" name="seats_max" min="0" step="1" style="width: 75px;"><br>
+            
+            <label>
+                <b>Rzutnik:</b>
+                <input type="checkbox" name="projector">
+            </label><br>
+            * - pole wymagane<br>
+            <input type="submit" value="Wyszukaj" style="width: 120px; height: 30px; font-size: 14px;">
         </form>
-        </section>
+
+        <div class="homebutton" style="float: right;">
+            <form method="get">
+                <button type="submit" formaction="{% url 'home' %}" 
+                    style="width: 200px; height: 60px; font-size: 18px; margin-top: 15px;">
+                    <b>Powrót do listy sal</b>
+                </button>
+            </form>
+        </div>
+        
     </div>
 
+    <div class="main">
+        {% block content %}
+        {% endblock content %}
+    </div>
+    
+        
 
 </body>
 
