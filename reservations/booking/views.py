@@ -25,6 +25,7 @@ class AllRooms(MyView):
             room.dost = dost
         return render(request, 'all_rooms.html', locals())
 
+
 class AddNewRoom(MyView): 
 
     def get(self, request):

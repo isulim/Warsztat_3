@@ -30,7 +30,7 @@ Lista sal
         {% endfor %}
     </table>
      <br>
-    <form method="post">
+    <form method="get">
         {% csrf_token %}
         <button type="submit" formaction="{% url 'new-room' %}" style="width: 120px; height: 30px; font-size: 14px;">Dodaj nową salę</button>
     </form>
@@ -38,3 +38,6 @@ Lista sal
 
     
 {% endblock content %}
+
+{% block homepageButton %}
+{% endblock %}

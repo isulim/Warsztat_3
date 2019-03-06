@@ -97,20 +97,21 @@ section:after {
             <input type="submit" value="Wyszukaj" style="width: 120px; height: 30px; font-size: 14px;">
         </form>
 
-        <div class="homebutton" style="float: right;">
-            <form method="get">
-                <button type="submit" formaction="{% url 'home' %}" 
-                    style="width: 200px; height: 60px; font-size: 18px; margin-top: 15px;">
-                    <b>Powrót do listy sal</b>
-                </button>
-            </form>
-        </div>
-        
     </div>
 
     <div class="main">
         {% block content %}
         {% endblock content %}
+        {% block homepageButton %}
+            <div class="homebutton" style="float: right;">
+            <form method="get">
+                <button type="submit" formaction="{% url 'home' %}"
+                    style="width: 200px; height: 60px; font-size: 18px; margin-top: 15px;">
+                    <b>Powrót do listy sal</b>
+                </button>
+            </form>
+        </div>
+        {% endblock %}
     </div>
     
         
