@@ -47,7 +47,8 @@ class AddNewRoom(MyView):
             biurka = True
         else:
             biurka = False
-        room = Room.objects.create(name=nazwa, floor=pietro, seats=miejsca, projector=rzutnik, desks=biurka)
+        room = Room.objects.create(name=nazwa, floor=pietro, seats=miejsca, projector=rzutnik,
+                                   desks=biurka)
         return redirect("/")
 
 
@@ -122,8 +123,10 @@ class Reserve(MyView):
             message = "Pokój jest już zarezerwowany w danym terminie."
             return HttpResponseRedirect("/reservation/{}".format(str(room_id)), locals())
         else:
-            res = Reservation.objects.create(owner=wlasciciel, date=data, room=pokoj, comment=komentarz)
+            res = Reservation.objects.create(owner=wlasciciel, date=data, room=pokoj,
+                                             comment=komentarz)
             return HttpResponseRedirect("/")
+
 
 class Search(MyView):
 
