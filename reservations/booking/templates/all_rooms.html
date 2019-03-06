@@ -10,7 +10,8 @@ Lista sal
         <tr>
             <th>Nr</th>
             <th>Nazwa sali</th>
-            <th>Dostępność dzisiaj</th>            
+            <th>Dostępność dzisiaj</th>
+            <th>Rezerwacja</th>
         </tr>
         
         {% for room in rooms %}            
@@ -22,6 +23,9 @@ Lista sal
                 <a href="{% url 'delete-room' room.id %}">Usuń</a>
             </td>
             <td>{{room.dost}}</td>
+            <td>
+                <a href="{% url 'reservation' room.id %}">Zarezerwuj</a>
+            </td>
         </tr>    
         {% endfor %}
     </table>
